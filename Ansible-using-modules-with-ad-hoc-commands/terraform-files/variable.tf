@@ -2,10 +2,10 @@ variable "tags" {
   default = ["control_node", "node_1", "node_2"]
 }
 variable "mykey" {
-  default = "clarusway"
+  default = "latif"
 }
 variable "user" {
-  default = "clarusway"
+  default = "latif"
 }
 
 variable "amznlnx2" {
