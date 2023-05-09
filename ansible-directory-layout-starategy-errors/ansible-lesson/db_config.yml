@@ -1,0 +1,76 @@
+--- 
+- hosts: db_server
+  name: configure myDB Server
+  become: true
+  vars:
+    hostname: cw_db_server
+    db_user: remoteUser
+    db_password: clarus1234
+    db_name: phonebook_db
+    db_table: phonebook
+
+  tasks:
+  - name: Set my hostname for DB server 
+    ansible.builtin.shell: "hostnamectl set-hostname {{ hostname  }}"
+      
+  - name: Install MYSQL & dependencies
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - mysql-server
+      - mysql-client
+      - python3-mysqldb
+      - libmysqlclient-dev
+
+  - name: Start service mysql, if not started
+    ansible.builtin.service:
+      name: mysql   # bunu degistimrden biraktigim icin hata aldim.
+      state: started
+      enabled: true
+
+  - name: Create database user   
+    community.mysql.mysql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_password }}"
+      priv: '*.*:ALL'
+      state: present
+      host: '%'
+  - name: Create a new database
+    community.mysql.mysql_db:
+      name: "{{ db_name }}"
+      state: present
+
+  - name: init.sql kopyaliyoruz
+    ansible.builtin.copy:
+      src: /home/ubuntu/ansible-lesson/phonebook/init.sql
+      dest: ~/init.sql
+     
+  - name: check if the database has the table
+    ansible.builtin.shell: |
+      echo "USE {{ db_name }}; show tables like '{{ db_table }}'; " | mysql
+    register: resultOfShowTables
+
+  - name: DEBUG
+    ansible.builtin.debug:
+      var: resultOfShowTables
+
+  - name: import init.sql to db
+    community.mysql.mysql_db:
+      name: "{{ db_name }}"
+      state: import
+      target: ~/init.sql
+    when: resultOfShowTables.stdout == ""
+
+  - name: Remottan baglanmayi serbest birakacagiz
+    ansible.builtin.lineinfile:
+      path: /etc/mysql/mysql.conf.d/mysqld.cnf
+      regexp: '^bind-address'
+      line: 'bind-address = 0.0.0.0'
+    notify:
+      - Restart mysql
+  handlers:
+    - name: Restart mysql
+      ansible.builtin.service:
+        name: mysql
+        state: restarted
