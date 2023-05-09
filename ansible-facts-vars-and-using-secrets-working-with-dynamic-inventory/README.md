@@ -300,7 +300,8 @@ nano create-user-1.yml
     - name: creating user
       ansible.builtin.user:
         name: "{{ username }}"
-        password: "{{ pwhash | password_hash ('sha512') }}"    
+        password: "{{ pwhash | password_hash ('sha512') }}" 
+  # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html#hashing-and-encrypting-strings-and-passwords   
 ``` 
 
 - run the plaaybook
