@@ -1,0 +1,11 @@
+- name: Windows makina degisiklik 
+  hosts: windows_servers
+  tasks:
+    - name: yükleme listesi ekle
+      chocolatey.chocolatey.win_chocolatey:
+        name: "{{ list }}"
+        state: present
+  vars:
+    list:
+      - git
+      - sublimetext4

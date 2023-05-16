@@ -1,0 +1,76 @@
+    1  sudo hostnamectl set-hostname control-node
+    2  sudo yum update -y
+    3  pip3 install --user ansible
+    4  curl -O https://bootstrap.pypa.io/get-pip.py
+    5  python3 get-pip.py --user
+    6  python3 -m pip install --user ansible
+    7  ansible --version
+    8  chmod 400 latif.pem 
+    9  pip3 install "pywinrm>=0.3.0" --user
+   10  mkdir project-1
+   11  cd project-1
+   12  vi inventory.txt
+   13  vim ansible.cfg
+   14  ansible linux_servers -m ping
+   15  ansible node_linux  -m ping
+   16  ansible node-linux  -m ping
+   17  cd ..
+   18  cp -r ~/project-1/ ~/project-2/
+   19  cd project-2
+   20  ls
+   21  vi inventory.ini
+   22  ansible-playbook ping.yml
+   23  ansible-playbook ping.yml -i inventory.ini
+   24  cd ..
+   25  cp -r project-2/ project-3/
+   26  cd project-3
+   27  l
+   28  ll
+   29  a ping.yml 
+   30  ap ping.yml 
+   31  ls
+   32  ap ping.yml 
+   33  cd ..
+   34  cp -r project-3/ project-4/
+   35  cd project-4
+   36  vi configure-windows.yml
+   37  ap configure-windows.yml 
+   38  cd ..
+   39  cp -r project-4/ project-5/
+   40  cd project-5
+   41  ansible-vault create windows_servers.yml
+   42  mkdir group_vars
+   43  cd group_vars
+   44  touch windows_servers.yml
+   45  ansible-vault encrypt_string --ask-vault-password 'xg(FA$URnsJ=DBn3CFR!Qb4FX4=s4xHq' --name 'ansible_password'
+   46  cd ..
+   47  ap configure-windows.yml 
+   48  ap configure-windows.yml --ask-vault-pass
+   49  cd group_vars
+   50  ls
+   51  ansible-vault create windows_servers.yml 
+   52  ansible-vault edit windows_servers.yml 
+   53  ansible-vault create windows_servers.yml 
+   54  ansible-vault decrypt windows_servers.yml 
+   55  cd ..
+   56  cp -r project-5/ project-6/
+   57  cd project-6
+   58  ap configure-windows.yml --ask-vault-pass
+   59  ap configure-windows.yml
+   60  cd ..
+   61  cd project-5
+   62  ap configure-windows.yml
+   63  ansible-vault create windows_servers.yml 
+   64  cd group_vars/
+   65  ansible-vault create windows_servers.yml 
+   66  cd ..
+   67  ansible-vault decrypt group_vars/windows_servers.yml
+   68  latif
+   69  cd ..
+   70  cd project-6/
+   71  ap configure-windows.yml 
+   72  cd ..
+   73  cd project-7
+   74  ap configure-windows.yml 
+   75  cd ..
+   76  history > history_11-05-2023.txt

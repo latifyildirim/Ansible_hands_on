@@ -1,0 +1,19 @@
+- name: Windows makina degisiklik 
+  hosts: windows_servers
+  tasks:
+    - name: Set timezone to 'Romance Standard Time' (GMT+01:00)
+      community.windows.win_timezone:
+        timezone: Romance Standard Time
+    
+    - name: Change the hostname to sample-hostname
+      ansible.windows.win_hostname:
+        name: windows-hostname
+      register: res
+    
+    - name: Hata varmi kontrol et
+      ansible.builtin.debug:
+        var: res
+
+    - name: Reboot the machine with all defaults
+      ansible.windows.win_reboot:
+      when: res.reboot_required

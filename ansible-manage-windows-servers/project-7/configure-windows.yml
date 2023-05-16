@@ -1,0 +1,25 @@
+- name: Windows makina degisiklik 
+  hosts: windows_servers
+  tasks:
+  - name: Create file with multiple attributes
+    ansible.windows.win_dsc:
+      resource_name: File
+      DestinationPath: C:\ansible\hello.txt
+      Contents: |
+        Hello 
+        Latif !
+      Ensure: Present
+      Type: File
+
+  - name: Install 7zip
+    win_chocolatey:
+      name: 7zip
+      version: '22.1'  
+      state: present
+      # Elle manuel zipledik Sonra assagidakini ekledik.
+  - name: Extract zip file
+    ansible.windows.win_dsc:
+      resource_name: Archive
+      Ensure: Present
+      Path: C:\ansible\hello.zip
+      Destination: C:\extracted

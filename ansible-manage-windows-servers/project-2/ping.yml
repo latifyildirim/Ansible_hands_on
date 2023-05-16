@@ -1,0 +1,5 @@
+- name: ping
+  hosts: windows_servers
+  tasks:
+    - name: Example from an Ansible Playbook
+      win_ping:

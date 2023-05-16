@@ -1,0 +1,4 @@
+ansible_user: Administrator
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_password: xg(FA$URnsJ=DBn3CFR!Qb4FX4=s4xHq
