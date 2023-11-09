@@ -53,29 +53,33 @@ At the end of this hands-on training, students will be able to;
 
 - Check the PowerShell Version.
 
-```powershell
+```powershell                                  
 $PSVersionTable
 ```
 
 - Check the version of .NET installed.
 
 
-```powershell
+```powershell                  
 Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name version -EA 0 | Where { $_.PSChildName -Match '^(?!S)\p{L}'} | Select PSChildName, version
 ```
 
 - To view the current listeners that are running on the WinRM service, run the following command:
 
-```powershell
+```powershell              
 winrm enumerate winrm/config/Listener
 ```
 
 - Note: If you do not see the information of the listeners, run following script in PowerShell to configure listener and service for the WinRM. (This script script sets up both HTTP and HTTPS listeners with a self-signed certificate and enables the Basic authentication option on the service.)
 
-```powershell
+```powershell            
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+$url = "https://raw.githubusercontent.com/ansible/ansible-documentation/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
 $file = "$env:temp\ConfigureRemotingForAnsible.ps1"
+
+(New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+
+powershell.exe -ExecutionPolicy ByPass -File $file
 
 (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
 
